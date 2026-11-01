@@ -75,8 +75,7 @@ button, input { font: inherit; color: inherit }
 
 /* Top bar */
 .top { display: flex; align-items: center; gap: 12px; padding-block: 20px }
-.top img { width: 34px; height: 34px; border-radius: 8px }
-.top b { font: 900 26px/1 var(--display); letter-spacing: .02em }
+.top .logo { display: block; height: 36px; width: auto }
 .top .lampnow { margin-left: auto }
 /* The lamp links to "Why Kelvin", where the page explains its light. */
 .lampnow { display: inline-flex; align-items: center; gap: 8px; font: 500 12px/1 var(--mono); padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--text); text-decoration: none; transition: border-color .2s }
@@ -226,7 +225,7 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
 <a class="lampnow lampfloat" href="#why" aria-hidden="true" tabindex="-1" title="This page's light: why it warms"><i></i><span class="lampk">6500K</span></a>
 
 <main>
-  <nav class="top"><img src="kelvin-icon.png" alt="" width="34" height="34"><b>Kelvin</b><a class="lampnow" href="#why" title="This page's light: why it warms"><i></i><span class="lampk">6500K</span></a></nav>
+  <nav class="top"><img class="logo" src="kelvin-logo.svg" alt="Kelvin" width="95" height="36"><a class="lampnow" href="#why" title="This page's light: why it warms"><i></i><span class="lampk">6500K</span></a></nav>
 
   <header class="hero">
     <div class="text">
