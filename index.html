@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Kelvin is a microphone for calls on your Mac: it removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
+<meta property="og:title" content="Kelvin: sound 2700K">
+<meta property="og:description" content="Kelvin is a microphone for calls on your Mac: it removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
+<meta property="og:image" content="https://kelvinmic.app/app-panel.png">
+<meta property="og:url" content="https://kelvinmic.app/">
+<meta name="theme-color" content="#14110e">
+<link rel="icon" type="image/png" href="kelvin-icon.png">
+<link rel="apple-touch-icon" href="kelvin-icon.png">
+<title>Kelvin 2700K</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Roboto+Condensed:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a dark room lit by one lamp that warms from 6500K at the top to 1900K at the bottom.
+   The demos are cream enamel plates with the app's own keys, so the page feels like the product. */
+:root {
+  color-scheme: dark;
+  --desk: #14110e;
+  --enamel: #ebe3cf;
+  --enamel-lo: #d6ccb4;
+  --key: #f6f0e1;
+  --ink: #3d3529;
+  --ink-dim: #847a68;
+  --text: #ece4d1;
+  --text-dim: #a99f8b;
+  --line: #3b3630;
+  --amber: #ffb347;
+  --rust: #b23a1d;
+  --light: 143 184 255;     /* the lamp's colour now, set from scroll */
+  --display: "Big Shoulders Display", "Oswald", "Arial Narrow", sans-serif;
+  --body: "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --section: 96px;
+}
+@media (max-width: 640px) { :root { --section: 64px } }
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body {
+  margin: 0; background: var(--desk); color: var(--text); font: 400 18px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-text-size-adjust: 100%;
+}
+.glow { position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(90% 55% at 50% -10%, rgb(var(--light) / .30), transparent 62%),
+              radial-gradient(70% 40% at 50% 112%, rgb(var(--light) / .10), transparent 70%) }
+main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto }
+section { padding-block: var(--section); border-top: 1px solid var(--line) }
+h1, h2 { font-family: var(--display); font-weight: 900; line-height: .9; margin: 0; text-wrap: balance }
+h2 { font-size: clamp(40px, 6vw, 68px); margin-bottom: 18px }
+.eyebrow { font: 700 13px/1.2 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px }
+p { margin: 0 }
+.lede { font-size: clamp(18px, 2vw, 22px); max-width: 32em }
+.dim { color: var(--text-dim) }
+button, input { font: inherit; color: inherit }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px }
+
+/* Top bar */
+.top { display: flex; align-items: center; gap: 12px; padding-block: 20px }
+.top img { width: 34px; height: 34px; border-radius: 8px }
+.top b { font: 900 26px/1 var(--display); letter-spacing: .02em }
+.top .lampnow { margin-left: auto }
+.lampnow { display: inline-flex; align-items: center; gap: 8px; font: 500 12px/1 var(--mono); padding: 8px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--text) }
+.lampnow i { width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--light)); box-shadow: 0 0 10px rgb(var(--light)) }
+/* On wide screens the lamp also follows you down the page; on phones it stays in the top bar. */
+.lampfloat { position: fixed; z-index: 3; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  background: #1d1a17e6; border-color: #000; box-shadow: 0 8px 20px #0008; pointer-events: none; opacity: 0; transition: opacity .3s }
+.lampfloat.shown { opacity: 1 }
+@media (max-width: 880px) { .lampfloat { display: none } }
+
+/* Hero: text and chips on the left, the demo on the right; on phones the demo comes right after the promise. */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-areas: "text demo" "more demo";
+  column-gap: 48px; row-gap: 28px; align-items: start; padding-block: 48px var(--section) }
+.hero .text { grid-area: text; align-self: end }
+.hero .demo { grid-area: demo; align-self: center }
+.hero .more { grid-area: more; display: grid; gap: 22px }
+.hero h1 { font-size: clamp(44px, 7.2vw, 94px); margin-bottom: 20px }
+.hero h1 em { font-style: normal; color: rgb(255 179 92) }
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 10px; text-decoration: none;
+  font: 700 14px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; border: 0 }
+.btn.primary { background: rgb(255 179 92); color: #1a120a }
+.btn.ghost { color: var(--text); box-shadow: inset 0 0 0 1px var(--line) }
+.apps { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0 }
+.apps li { font: 500 12px/1 var(--mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--text-dim) }
+@media (max-width: 880px) {
+  .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "text" "demo" "more"; padding-top: 24px }
+}
+
+/* Enamel plate */
+.plate { position: relative; background: linear-gradient(170deg, #f6f0e1, var(--enamel) 40%, var(--enamel-lo)); color: var(--ink);
+  border-radius: 14px; padding: 26px 22px 20px; box-shadow: inset 0 1px 0 #ffffff80, 0 0 0 1px #000, 0 24px 60px #000b }
+.plate::before, .plate::after { content: ""; position: absolute; top: 10px; width: 9px; height: 9px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #eee, #888 60%, #444) }
+.plate::before { left: 10px } .plate::after { right: 10px }
+.lbl { font: 700 12px/1.2 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--ink) }
+
+/* Waveform rows */
+.wrow { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; transition: opacity .25s; cursor: pointer }
+.wrow .name { font: 700 13px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase }
+.wrow canvas { width: 100%; height: 56px; display: block }
+.wrow.muted { opacity: .38 }
+.rows { display: grid; gap: 10px; margin-top: 14px }
+@media (max-width: 480px) { .wrow { grid-template-columns: minmax(0, 1fr); gap: 4px } .wrow canvas { height: 44px } }
+
+/* Player controls: play/stop plus a choice, on one row */
+.controls { display: flex; gap: 10px; align-items: stretch; margin-top: 16px }
+.playbtn { appearance: none; border: 0; cursor: pointer; flex: none; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 16px 0 12px;
+  border-radius: 10px; background: linear-gradient(#3a352f, #24201c); color: var(--text);
+  font: 700 14px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; box-shadow: inset 0 1px 0 #ffffff1c, 0 0 0 1px #000, 0 4px 10px #0006 }
+.playbtn .t { min-width: 3.2em; text-align: left }
+.bulb { width: 20px; height: 20px; border-radius: 50%; flex: none; background: radial-gradient(circle at 40% 35%, #6b3a12, #2a1405 70%); box-shadow: inset 0 0 0 2px #0008; transition: background .4s, box-shadow .4s }
+.on .bulb { background: radial-gradient(circle at 40% 35%, #fff3e0, var(--amber) 45%, #d9620f); box-shadow: inset 0 0 0 2px #0005, 0 0 14px #ffb347cc }
+
+/* The app's keys: raised cream keys with an indicator slot that glows when chosen */
+.keys { flex: 1; min-width: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; padding: 5px; border-radius: 10px; background: #0000001c; box-shadow: inset 0 1px 3px #0003 }
+.keys button { appearance: none; border: 0; cursor: pointer; min-height: 48px; padding: 14px 4px 6px; border-radius: 7px; position: relative;
+  background: linear-gradient(#fbf7ec, #e6dcc6); color: var(--ink); box-shadow: inset 0 1px 0 #fff, 0 3px 0 #b9ad93, 0 4px 6px #0003;
+  font: 700 12px/1.1 var(--body); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.keys button::before { content: ""; position: absolute; top: 6px; left: 50%; width: 22px; height: 5px; margin-left: -11px; border-radius: 3px; background: #3b2a1a }
+.keys button[aria-pressed="true"] { transform: translateY(2px); box-shadow: inset 0 1px 0 #fff, 0 1px 0 #b9ad93, 0 1px 2px #0003 }
+.keys button[aria-pressed="true"]::before { background: var(--amber); box-shadow: 0 0 8px #ffb347 }
+
+.note { margin-top: 14px; padding-top: 12px; border-top: 1px dashed #0000002a; font-size: 15px; line-height: 1.45 }
+.note strong { font: 900 22px/1 var(--display); color: var(--rust) }
+.bar { height: 4px; border-radius: 2px; background: #0000001a; overflow: hidden; margin-top: 14px }
+.bar i { display: block; height: 100%; width: 0; background: var(--rust) }
+
+/* How it works */
+.how { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 56px; align-items: center }
+.steps { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 20px; counter-reset: s }
+.steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; counter-increment: s }
+.steps li::before { content: counter(s); font: 900 32px/1 var(--display); color: rgb(var(--light)) }
+.steps b { display: block; font-size: 19px; margin-bottom: 2px }
+.shot { margin: 0 }
+.shot img { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px #000, 0 30px 70px #000c; display: block }
+.shot figcaption { font-size: 15px; color: var(--text-dim); margin-top: 12px }
+@media (max-width: 880px) { .how { grid-template-columns: minmax(0, 1fr); gap: 36px } }
+
+/* Voice keys */
+.voice-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 56px; align-items: center }
+.voicebox .readout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 18px; align-items: center; min-height: 110px; margin-bottom: 6px }
+.voicebox .k { font: 900 64px/.9 var(--display); font-variant-numeric: tabular-nums; color: var(--ink) }
+.voicebox .k small { font-size: .45em; vertical-align: .9em }
+.voicebox .temp { grid-column: 1 / -1; height: 6px; border-radius: 3px; box-shadow: inset 0 0 0 1px #0000002a; transition: background .3s }
+.voicebox .desc { font-size: 16px; line-height: 1.45 }
+.voicebox .desc b { display: block; font: 700 13px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px }
+.controls.wrap { flex-direction: column } .controls.wrap .playbtn { justify-content: center }
+@media (max-width: 880px) { .voice-sec { grid-template-columns: minmax(0, 1fr); gap: 32px } }
+@media (max-width: 480px) {
+  .voicebox .readout { grid-template-columns: minmax(0, 1fr); min-height: 0 }
+  .voicebox .k { font-size: 52px }
+  .voicebox .keys { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)) }
+}
+details { margin-top: 28px; border: 1px solid var(--line); border-radius: 10px; padding: 0 16px }
+summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim) }
+.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 4px 32px; padding-bottom: 16px; font: 500 13px/1.5 var(--mono); color: var(--text-dim) }
+.spec div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px dotted var(--line); padding-block: 5px }
+.spec span:last-child { color: var(--text); text-align: right }
+
+/* Why */
+.why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 56px; margin-top: 32px }
+.why h3 { font: 700 21px/1.25 var(--body); margin: 0 0 6px; color: rgb(var(--light)) }
+@media (max-width: 760px) { .why { grid-template-columns: minmax(0, 1fr); gap: 24px } }
+
+/* Name */
+.name-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center }
+.kscale { display: grid; gap: 10px }
+.kscale .scalebar { height: 14px; border-radius: 7px; position: relative; background: linear-gradient(90deg, rgb(143 184 255), rgb(196 214 240) 20%, rgb(235 228 210) 42%, rgb(255 206 150) 62%, rgb(255 179 92) 80%, rgb(255 122 40)) }
+.kscale .needle { position: absolute; top: -6px; bottom: -6px; width: 3px; margin-left: -1.5px; border-radius: 2px; background: var(--text); box-shadow: 0 0 0 1px #000 }
+.kscale .ticks { display: flex; justify-content: space-between; gap: 8px; font: 500 12px/1.3 var(--mono); color: var(--text-dim) }
+.kscale .ticks span { text-align: center } .kscale .ticks span:first-child { text-align: left } .kscale .ticks span:last-child { text-align: right }
+@media (max-width: 760px) { .name-sec { grid-template-columns: minmax(0, 1fr); gap: 28px } }
+
+/* Finale */
+.finale { padding-block: var(--section) calc(var(--section) + 40px); border-top: 1px solid var(--line); display: grid; gap: 22px; max-width: 760px }
+.finale h2 { font-size: clamp(54px, 9vw, 112px); color: rgb(var(--light)) }
+.wait { display: flex; gap: 10px; flex-wrap: wrap; max-width: 520px }
+.wait label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%) }
+.wait input { flex: 1 1 220px; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: #1d1a17; color: var(--text); font-size: 17px }
+.wait input::placeholder { color: #7d7465 }
+.wait .btn { flex: none; background: rgb(var(--light)); color: #1a120a }
+.wait-msg { font-size: 15px; color: var(--text-dim); min-height: 1.4em }
+.footnote { font-size: 14px; color: var(--text-dim); max-width: 46em }
+@media (max-width: 480px) { .wait .btn { flex: 1 1 100% } }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } .bulb, .wrow, .lampfloat, .voicebox .temp { transition: none } }
+</style>
+<style>:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px) }</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+<div class="lampnow lampfloat" aria-hidden="true"><i></i><span class="lampk">6500K</span></div>
+
+<main>
+  <nav class="top"><img src="kelvin-icon.png" alt="" width="34" height="34"><b>Kelvin</b><span class="lampnow" title="This page's light"><i></i><span class="lampk">6500K</span></span></nav>
+
+  <header class="hero">
+    <div class="text">
+      <div class="eyebrow">A microphone for calls on your Mac</div>
+      <h1>The office stays out of your calls. <em>Your voice comes through warm.</em></h1>
+      <p class="lede">Kelvin removes background noise from your mic and gives your voice a warm, close tone. Choose it once as your microphone and it works in every call app.</p>
+    </div>
+
+    <div class="plate demo" id="demo">
+      <span class="lbl">Hear it · open-plan office, 16 s</span>
+      <div class="rows">
+        <div class="wrow" id="row-raw" data-ab="raw"><span class="name">Laptop mic</span><canvas data-k="6500" aria-label="Laptop mic: the office noise fills every pause"></canvas></div>
+        <div class="wrow muted" id="row-kel" data-ab="kel"><span class="name">With Kelvin</span><canvas data-k="2700" aria-label="With Kelvin: the pauses are silent"></canvas></div>
+      </div>
+      <div class="controls">
+        <button class="playbtn" id="demo-play" type="button" aria-pressed="false"><span class="bulb"></span><span class="t">Play</span></button>
+        <div class="keys" role="group" aria-label="What to hear">
+          <button type="button" id="ab-raw" aria-pressed="true">Laptop mic</button>
+          <button type="button" id="ab-kel" aria-pressed="false">Kelvin</button>
+        </div>
+      </div>
+      <p class="note">Between words the laptop mic is never quiet: that solid band is typing, the air vent and mains hum. Switch to Kelvin while it plays. <strong>37.4&nbsp;dB</strong> quieter between words.</p>
+    </div>
+
+    <div class="more">
+      <div class="ctas"><a class="btn primary" href="#waitlist">Join the waitlist</a><a class="btn ghost" href="#how">How it works</a></div>
+      <ul class="apps" aria-label="Works in"><li>Zoom</li><li>Google Meet</li><li>Microsoft Teams</li><li>FaceTime</li><li>Slack</li><li>Discord</li><li>macOS 14+</li></ul>
+    </div>
+  </header>
+
+  <section class="how" id="how">
+    <div>
+      <div class="eyebrow">How it works</div>
+      <h2>Set it up once.</h2>
+      <p class="lede">Kelvin adds a microphone called “Kelvin Mic” to your Mac. Your call app listens to it, and Kelvin listens to your real mic.</p>
+      <ol class="steps">
+        <li><div><b>Install Kelvin</b><span class="dim">It asks for your mic once and adds “Kelvin Mic” to the system.</span></div></li>
+        <li><div><b>Pick “Kelvin Mic” in your call app</b><span class="dim">In Zoom, Meet or Teams audio settings. They remember it.</span></div></li>
+        <li><div><b>Talk</b><span class="dim">The lamp lights up ON AIR while an app hears you. “How do I sound” plays back 6 seconds of you, before and after.</span></div></li>
+      </ol>
+    </div>
+    <figure class="shot">
+      <img src="app-panel.png" alt="Kelvin's panel: an ON AIR lamp saying Zoom hears you, a VU meter labelled How you sound, a Noise knob and four Voice keys" width="900" height="641" loading="lazy">
+      <figcaption>Two controls. Noise: Off, Soft, Normal, Maximum. Voice: As is, Clearer, Warmer, Broadcast.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="voice-sec">
+      <div>
+        <div class="eyebrow">The Voice keys</div>
+        <h2>Choose how you sound.</h2>
+        <p class="lede">The same four keys as in the app. Noise stays on Normal; the keys change only the tone of your voice. Switch while it plays.</p>
+      </div>
+      <div class="plate voicebox" id="voicebox">
+        <div class="readout">
+          <span class="k" id="v-k">4000<small>K</small></span>
+          <p class="desc" id="v-desc"><b>As is</b>Noise gone, voice untouched. Even loudness, nothing added.</p>
+          <span class="temp" id="v-temp"></span>
+        </div>
+        <div class="controls wrap">
+          <button class="playbtn" id="voice-play" type="button" aria-pressed="false"><span class="bulb"></span><span class="t">Play</span></button>
+          <div class="keys" role="group" aria-label="Voice">
+            <button type="button" data-voice="0" aria-pressed="true">As is</button>
+            <button type="button" data-voice="1" aria-pressed="false">Clearer</button>
+            <button type="button" data-voice="2" aria-pressed="false">Warmer</button>
+            <button type="button" data-voice="3" aria-pressed="false">Broadcast</button>
+          </div>
+        </div>
+        <div class="bar" aria-hidden="true"><i id="voice-bar"></i></div>
+      </div>
+    </div>
+    <details>
+      <summary>What happens inside</summary>
+      <div class="spec">
+        <div><span>High-pass</span><span>80 Hz</span></div>
+        <div><span>Hum filter</span><span>auto 50 / 60 Hz</span></div>
+        <div><span>Noise suppression</span><span>DPDFNet neural net, on device</span></div>
+        <div><span>Noise: Soft · Normal · Max</span><span>15 · 50 · 100 dB</span></div>
+        <div><span>Leveling</span><span>to −20 dBFS, up to +12 dB</span></div>
+        <div><span>Clearer</span><span>presence +3 dB, de-esser 6 dB, 2:1</span></div>
+        <div><span>Warmer</span><span>warmth +2 dB, box −4 dB</span></div>
+        <div><span>Broadcast</span><span>tone ±3 dB, de-esser 4 dB, 3:1, −16 dBFS</span></div>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="eyebrow">Already have noise removal?</div>
+    <h2>What Kelvin adds.</h2>
+    <p class="lede">macOS Voice Isolation and the filters inside call apps remove noise. Kelvin does that too, and then:</p>
+    <div class="why">
+      <div><h3>One setting for every app</h3><p>Kelvin Mic is a regular system microphone. Anything that lets you pick a mic uses it, browser calls included, with the same sound everywhere.</p></div>
+      <div><h3>It shapes your voice</h3><p>Noise removal leaves a thin, boxy laptop voice. The Voice keys bring back warmth and clarity.</p></div>
+      <div><h3>You can hear yourself</h3><p>“How do I sound” records 6 seconds and plays them back before and after. The VU meter shows how loud others hear you.</p></div>
+      <div><h3>It stays on your Mac</h3><p>All processing runs locally. No account, and your voice never goes to a server.</p></div>
+    </div>
+  </section>
+
+  <section class="name-sec">
+    <div>
+      <div class="eyebrow">Why “Kelvin”</div>
+      <h2>Light has a temperature. So does a voice.</h2>
+      <p class="lede">Light colour is measured in kelvins. An office ceiling panel is about 6500K: cold and flat. A lamp at home is 2700K, firelight about 1900K. The light on this page warms the same way as you scroll down.</p>
+    </div>
+    <div class="kscale">
+      <div class="scalebar"><span class="needle" id="needle"></span></div>
+      <div class="ticks" aria-hidden="true"><span>6500K<br>office</span><span>4000K</span><span>2700K<br>home lamp</span><span>1900K<br>fire</span></div>
+    </div>
+  </section>
+
+  <footer class="finale" id="waitlist">
+    <h2>Sound 2700K.</h2>
+    <p class="lede">Kelvin is coming to the Mac. Leave your email and we'll write once, when it's ready.</p>
+    <form class="wait" id="wait-form" novalidate>
+      <label for="wait-email">Email</label>
+      <input id="wait-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+      <button class="btn" type="submit">Notify me</button>
+    </form>
+    <p class="wait-msg" id="wait-msg" role="status"></p>
+    <p class="dim">macOS 14 Sonoma or later · runs on your Mac, no cloud</p>
+    <p class="footnote">Prototype. The samples are a synthetic voice (macOS “Samantha”) mixed with synthetic office noise at 5 dB SNR, run offline through Kelvin's actual processing (MicBench, DPDFNet-8, Noise: Normal). The laptop-mic sample is raised 9.5 dB so both play at the same loudness. A real recording will replace them.</p>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const PEAKS = {"6500":[0.644,0.689,0.69,0.664,0.703,0.68,0.691,0.681,0.64,0.589,0.574,0.558,0.565,0.657,0.683,0.672,0.591,0.559,0.569,0.567,0.7,0.721,0.705,0.638,0.705,0.707,0.71,0.688,0.624,0.616,0.686,0.664,0.631,0.57,0.561,0.565,0.577,0.575,0.577,0.565,0.56,0.56,0.558,0.566,0.56,0.575,0.689,0.675,0.616,0.565,0.571,0.568,0.572,0.652,0.685,0.662,0.58,0.553,0.575,0.656,0.574,0.665,0.62,0.683,0.58,0.671,0.678,0.684,0.702,0.69,0.684,0.684,0.648,0.582,0.552,0.579,0.58,0.544,0.563,0.553,0.567,0.56,0.557,0.568,0.715,0.727,0.714,0.625,0.625,0.679,0.694,0.69,0.701,0.583,0.638,0.584,0.692,0.654,0.576,0.675,0.639,0.57,0.555,0.582,0.702,0.685,0.618,0.694,0.649,0.664,0.676,0.691,0.679,0.682,0.689,0.695,0.636,0.558,0.688,0.698,0.68,0.658,0.602,0.574,0.573,0.576,0.581,0.582,0.565,0.562,0.551,0.567,0.681,0.661,0.58,0.689,0.666,0.685,0.708,0.7,0.677,0.642,0.681,0.702,0.596,0.66,0.663,0.62,0.647,0.596,0.572,0.567,0.564,0.556,0.562,0.57,0.561,0.574,0.562,0.598,0.706,0.692,0.577,0.675,0.67,0.572,0.644,0.692,0.548,0.657,0.597,0.681,0.687,0.694,0.645,0.557,0.682,0.675,0.645,0.559],"4000":[0.442,0.524,0.525,0.494,0.543,0.52,0.542,0.526,0.478,0.329,0,0,0,0.532,0.577,0.548,0.437,0,0,0.179,0.616,0.644,0.635,0.542,0.643,0.652,0.666,0.64,0.543,0.528,0.655,0.632,0.58,0,0,0,0,0,0,0,0,0,0,0,0,0.448,0.669,0.645,0.559,0,0,0,0,0.654,0.7,0.66,0.518,0,0,0.652,0.452,0.659,0.621,0.701,0.527,0.668,0.704,0.703,0.719,0.705,0.689,0.673,0.607,0.252,0.337,0,0,0,0,0,0,0,0,0.357,0.718,0.737,0.718,0.58,0.562,0.671,0.69,0.676,0.691,0.453,0.573,0.53,0.684,0.639,0.458,0.674,0.621,0.43,0,0.456,0.718,0.709,0.579,0.709,0.64,0.666,0.687,0.703,0.679,0.681,0.655,0.685,0.594,0.298,0.675,0.701,0.663,0.638,0.53,0.253,0,0,0,0,0,0,0,0.11,0.685,0.657,0.505,0.7,0.651,0.694,0.718,0.7,0.672,0.631,0.667,0.693,0.5,0.646,0.613,0.598,0.632,0.524,0,0,0,0,0,0,0,0,0,0.544,0.724,0.71,0.4,0.666,0.684,0.181,0.624,0.717,0.278,0.664,0.502,0.698,0.705,0.71,0.644,0.256,0.692,0.669,0.639,0],"3200":[0.374,0.474,0.496,0.478,0.533,0.515,0.54,0.521,0.479,0.329,0,0,0,0.52,0.55,0.533,0.438,0,0,0.203,0.594,0.628,0.628,0.544,0.643,0.651,0.666,0.641,0.544,0.531,0.656,0.633,0.582,0,0,0,0,0,0,0,0,0,0,0,0,0.452,0.663,0.638,0.56,0.015,0,0,0,0.638,0.671,0.638,0.517,0,0,0.642,0.445,0.647,0.601,0.683,0.503,0.661,0.684,0.693,0.712,0.702,0.689,0.673,0.606,0.277,0.367,0,0,0,0,0,0,0,0,0.356,0.708,0.724,0.716,0.579,0.562,0.671,0.691,0.676,0.691,0.453,0.575,0.53,0.679,0.628,0.461,0.674,0.622,0.431,0,0.46,0.704,0.695,0.58,0.703,0.637,0.661,0.682,0.689,0.677,0.682,0.657,0.686,0.594,0.325,0.672,0.693,0.665,0.639,0.529,0.251,0,0,0,0,0,0,0,0.111,0.681,0.645,0.531,0.695,0.645,0.69,0.715,0.695,0.67,0.629,0.667,0.693,0.5,0.647,0.612,0.6,0.633,0.525,0.001,0,0,0,0,0,0,0,0,0.549,0.699,0.691,0.405,0.666,0.672,0.195,0.627,0.705,0.279,0.661,0.498,0.685,0.683,0.705,0.64,0.283,0.69,0.662,0.641,0],"2700":[0.431,0.511,0.502,0.473,0.528,0.509,0.531,0.516,0.469,0.316,0,0,0,0.51,0.558,0.532,0.412,0,0,0.176,0.599,0.633,0.614,0.532,0.615,0.638,0.65,0.618,0.524,0.515,0.63,0.609,0.547,0,0,0,0,0,0,0,0,0,0,0,0,0.434,0.645,0.621,0.548,0,0,0,0,0.625,0.677,0.644,0.513,0,0,0.634,0.449,0.62,0.591,0.684,0.519,0.647,0.681,0.688,0.716,0.695,0.679,0.665,0.606,0.262,0.347,0,0,0,0,0,0,0,0,0.359,0.709,0.737,0.698,0.564,0.554,0.67,0.687,0.679,0.686,0.471,0.574,0.538,0.682,0.643,0.468,0.669,0.619,0.442,0,0.437,0.707,0.696,0.559,0.678,0.623,0.653,0.678,0.696,0.672,0.674,0.634,0.685,0.591,0.316,0.675,0.702,0.655,0.64,0.54,0.293,0,0,0,0,0,0,0,0.127,0.683,0.656,0.512,0.681,0.633,0.69,0.719,0.697,0.664,0.621,0.667,0.696,0.511,0.644,0.613,0.595,0.633,0.531,0.03,0,0,0,0,0,0,0,0,0.521,0.701,0.683,0.389,0.638,0.66,0.175,0.609,0.708,0.281,0.643,0.5,0.675,0.683,0.697,0.64,0.261,0.689,0.664,0.626,0],"1900":[0.341,0.447,0.472,0.46,0.519,0.507,0.531,0.514,0.474,0.322,0,0,0,0.504,0.53,0.519,0.42,0,0,0.191,0.577,0.615,0.612,0.538,0.623,0.643,0.656,0.625,0.531,0.522,0.638,0.617,0.557,0,0,0,0,0,0,0,0,0,0,0,0,0.441,0.645,0.618,0.554,0.006,0,0,0,0.614,0.645,0.62,0.515,0,0,0.627,0.442,0.621,0.579,0.666,0.491,0.644,0.66,0.683,0.713,0.702,0.695,0.685,0.628,0.291,0.374,0,0,0,0,0,0,0,0,0.368,0.708,0.728,0.713,0.581,0.571,0.685,0.702,0.698,0.711,0.494,0.596,0.557,0.689,0.64,0.474,0.675,0.624,0.445,0,0.446,0.692,0.684,0.566,0.683,0.628,0.656,0.677,0.686,0.683,0.69,0.657,0.703,0.612,0.342,0.682,0.701,0.673,0.656,0.551,0.296,0,0,0,0,0,0,0,0.132,0.682,0.647,0.528,0.684,0.635,0.692,0.722,0.706,0.682,0.643,0.689,0.721,0.537,0.668,0.634,0.612,0.646,0.539,0.032,0,0,0,0,0,0,0,0,0.531,0.679,0.667,0.395,0.645,0.652,0.188,0.616,0.696,0.286,0.647,0.5,0.668,0.663,0.698,0.642,0.277,0.689,0.661,0.637,0]};
+
+  // Lamp colour by temperature, the same stops as the app icon's scale.
+  const stops = [[6500, [143, 184, 255]], [5000, [196, 214, 240]], [4000, [235, 228, 210]],
+                 [3200, [255, 206, 150]], [2700, [255, 179, 92]], [1900, [255, 122, 40]]];
+  const colourAt = k => {
+    for (let i = 0; i < stops.length - 1; i++) {
+      const [k0, c0] = stops[i], [k1, c1] = stops[i + 1];
+      if (k <= k0 && k >= k1) { const t = (k0 - k) / (k0 - k1); return c0.map((v, j) => Math.round(v + (c1[j] - v) * t)); }
+    }
+    return k > 6500 ? stops[0][1] : stops[stops.length - 1][1];
+  };
+  const mired = k => 1e6 / k;
+  const lampks = document.querySelectorAll('.lampk'), lampfloat = document.querySelector('.lampfloat');
+  const needle = document.getElementById('needle'), topbar = document.querySelector('.top');
+  function light() {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const t = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+    // Even steps in mireds (1/K) look even to the eye; kelvins don't.
+    const k = 1e6 / (mired(6500) + t * (mired(1900) - mired(6500)));
+    document.documentElement.style.setProperty('--light', colourAt(k).join(' '));
+    lampks.forEach(e => e.textContent = Math.round(k / 50) * 50 + 'K');
+    needle.style.left = t * 100 + '%';
+    lampfloat.classList.toggle('shown', topbar.getBoundingClientRect().bottom < 0);
+  }
+
+  // Waveforms, drawn from the samples' loudness so the difference reads without sound.
+  const canvases = [...document.querySelectorAll('canvas[data-k]')];
+  const progress = new Map();
+  function draw(cv) {
+    const dpr = devicePixelRatio || 1, w = cv.clientWidth, h = cv.clientHeight;
+    if (!w) return;
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
+    const src = PEAKS[cv.dataset.k], bars = Math.max(40, Math.min(src.length, Math.floor(w / 3))), bw = w / bars, p = progress.get(cv);
+    for (let i = 0; i < bars; i++) {
+      const a = Math.floor(i * src.length / bars), b = Math.max(a + 1, Math.floor((i + 1) * src.length / bars));
+      const peak = Math.max(...src.slice(a, b)), v = Math.max(0, (peak - .3) / .45), bh = Math.max(1, Math.min(1, v) * (h - 4));
+      g.fillStyle = p != null && i / bars <= p ? '#b23a1d' : '#3d3529';
+      g.globalAlpha = v > 0 ? 1 : .35;
+      g.fillRect(i * bw + bw * .15, (h - bh) / 2, Math.max(1, bw * .7), bh);
+    }
+    g.globalAlpha = 1;
+  }
+  const drawAll = () => canvases.forEach(draw);
+
+  // Audio. A player runs several versions of one take in sync and a choice only moves their volumes,
+  // so switching is instant and keeps your place. Nothing loops; hiding the tab stops it.
+  let ctx, now = null;
+  const buffers = {};
+  const load = k => buffers[k] ||= fetch(`audio/k${k}.mp3`).then(r => r.arrayBuffer()).then(b => ctx.decodeAudioData(b));
+  function setButton(b, on) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.querySelector('.t').textContent = on ? 'Stop' : 'Play'; }
+  function stop() {
+    if (!now) return;
+    now.sources.forEach(s => { s.onended = null; try { s.stop(); } catch (e) {} });
+    setButton(now.player.button, false);
+    now.player.onProgress(null);
+    now = null;
+  }
+  async function play(player) {
+    if (now && now.player === player) { stop(); return; }
+    stop();
+    ctx ||= new (window.AudioContext || window.webkitAudioContext)();
+    ctx.resume();
+    setButton(player.button, true);
+    const claim = {};
+    now = { player, sources: [], gains: [], claim };
+    let bufs;
+    try { bufs = await Promise.all(player.ks.map(load)); }
+    catch (e) { if (now && now.claim === claim) { now = null; setButton(player.button, false); player.button.querySelector('.t').textContent = 'Retry'; } return; }
+    if (!now || now.claim !== claim) return; // stopped while loading
+    const at = ctx.currentTime + .05;
+    now.gains = bufs.map((b, i) => { const g = ctx.createGain(); g.gain.value = player.active() === i ? 1 : 0; g.connect(ctx.destination); return g; });
+    now.sources = bufs.map((b, i) => { const s = ctx.createBufferSource(); s.buffer = b; s.connect(now.gains[i]); s.start(at); return s; });
+    now.sources[0].onended = stop;
+    now.at = at; now.dur = bufs[0].duration;
+    tick();
+  }
+  function select(player) {
+    if (now && now.player === player) now.gains.forEach((g, i) => g.gain.setTargetAtTime(player.active() === i ? 1 : 0, ctx.currentTime, .015));
+  }
+  function tick() {
+    if (!now || !now.dur) return;
+    now.player.onProgress(Math.min(1, Math.max(0, (ctx.currentTime - now.at) / now.dur)));
+    requestAnimationFrame(tick);
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+
+  // Hero A/B
+  let kelvinOn = false;
+  const rowRaw = document.getElementById('row-raw'), rowKel = document.getElementById('row-kel');
+  const abRaw = document.getElementById('ab-raw'), abKel = document.getElementById('ab-kel');
+  const demoCanvases = [rowRaw.querySelector('canvas'), rowKel.querySelector('canvas')];
+  const demo = {
+    button: document.getElementById('demo-play'), ks: [6500, 2700], active: () => kelvinOn ? 1 : 0,
+    onProgress: p => demoCanvases.forEach(c => { p == null ? progress.delete(c) : progress.set(c, p); draw(c); }),
+  };
+  function setAB(on) {
+    kelvinOn = on;
+    abRaw.setAttribute('aria-pressed', !on); abKel.setAttribute('aria-pressed', on);
+    rowRaw.classList.toggle('muted', on); rowKel.classList.toggle('muted', !on);
+    select(demo);
+  }
+  abRaw.addEventListener('click', () => setAB(false));
+  abKel.addEventListener('click', () => setAB(true));
+  rowRaw.addEventListener('click', () => setAB(false));
+  rowKel.addEventListener('click', () => setAB(true));
+  demo.button.addEventListener('click', () => play(demo));
+
+  // Voice keys
+  const voices = [
+    { k: 4000, name: 'As is', text: 'Noise gone, voice untouched. Even loudness, nothing added.' },
+    { k: 3200, name: 'Clearer', text: 'Consonants come forward and sharp “s” sounds soften. Nobody asks you to repeat that.' },
+    { k: 2700, name: 'Warmer', text: 'The low body of your voice comes back and the boxy laptop tone goes. You sound like you are in the room.' },
+    { k: 1900, name: 'Broadcast', text: 'Warm, present and evenly loud, like a voice on late-night radio. For talks and podcasts.' },
+  ];
+  let voice = 0;
+  const vK = document.getElementById('v-k'), vDesc = document.getElementById('v-desc'), vTemp = document.getElementById('v-temp'), vBar = document.getElementById('voice-bar');
+  const voiceKeys = [...document.querySelectorAll('[data-voice]')];
+  const voicePlayer = {
+    button: document.getElementById('voice-play'), ks: voices.map(v => v.k), active: () => voice,
+    onProgress: p => vBar.style.width = (p == null ? 0 : p * 100) + '%',
+  };
+  function setVoice(i) {
+    voice = i;
+    const v = voices[i];
+    voiceKeys.forEach((b, j) => b.setAttribute('aria-pressed', j === i));
+    vK.innerHTML = v.k + '<small>K</small>';
+    vDesc.innerHTML = `<b>${v.name}</b>${v.text}`;
+    vTemp.style.background = `rgb(${colourAt(v.k).join(' ')})`;
+    select(voicePlayer);
+  }
+  voiceKeys.forEach((b, i) => b.addEventListener('click', () => setVoice(i)));
+  voicePlayer.button.addEventListener('click', () => play(voicePlayer));
+  setVoice(0);
+
+  // Waitlist: a prototype, so it says plainly that nothing is sent.
+  const form = document.getElementById('wait-form'), email = document.getElementById('wait-email'), msg = document.getElementById('wait-msg');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    msg.textContent = /^\S+@\S+\.\S+$/.test(email.value.trim())
+      ? 'Thanks. This is a prototype, so nothing was sent yet.'
+      : 'Enter an email like name@example.com.';
+  });
+
+  addEventListener('scroll', () => requestAnimationFrame(light), { passive: true });
+  addEventListener('resize', () => { light(); drawAll(); });
+  light(); drawAll();
+})();
+</script>
+</body>
+</html>
