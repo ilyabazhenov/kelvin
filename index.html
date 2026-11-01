@@ -3,11 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Kelvin is a microphone for calls on your Mac: it removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
-<meta property="og:title" content="Kelvin: sound 2700K">
-<meta property="og:description" content="Kelvin is a microphone for calls on your Mac: it removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
-<meta property="og:image" content="https://kelvinmic.app/app-panel.png">
+<meta name="description" content="A microphone for calls on your Mac. Removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kelvin">
+<meta property="og:title" content="Kelvin: Sound 2700K">
+<meta property="og:description" content="A microphone for calls on your Mac. Removes background noise and gives your voice a warm, close tone in Zoom, Meet and Teams.">
+<meta property="og:image" content="https://kelvinmic.app/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Kelvin: Sound 2700K. A microphone for calls on your Mac.">
 <meta property="og:url" content="https://kelvinmic.app/">
+<!-- A wide card: Telegram, X and Slack show the banner full width instead of a thumbnail. -->
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14110e">
 <link rel="icon" type="image/png" href="kelvin-icon.png">
 <link rel="apple-touch-icon" href="kelvin-icon.png">
@@ -99,7 +106,7 @@ button, input { font: inherit; color: inherit }
   .hero .lede { font-size: 17px }
 }
 /* Narrow phones: Play on its own row, so "Laptop mic" fits its key. */
-@media (max-width: 400px) { .demo .controls { flex-direction: column } .demo .playbtn { justify-content: center } }
+@media (max-width: 400px) { .demo .controls { flex-direction: column } .demo .playbtn { justify-content: center } .demo .keys { grid-auto-columns: minmax(0, 1fr) } }
 
 /* Enamel plate */
 .plate { position: relative; background: linear-gradient(170deg, #f6f0e1, var(--enamel) 40%, var(--enamel-lo)); color: var(--ink);
@@ -127,8 +134,8 @@ button, input { font: inherit; color: inherit }
 .on .bulb { background: radial-gradient(circle at 40% 35%, #fff3e0, var(--amber) 45%, #d9620f); box-shadow: inset 0 0 0 2px #0005, 0 0 14px #ffb347cc }
 
 /* The app's keys: raised cream keys with an indicator slot that glows when chosen */
-.keys { flex: 1; min-width: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; padding: 5px; border-radius: 10px; background: #0000001c; box-shadow: inset 0 1px 3px #0003 }
-.keys button { appearance: none; border: 0; cursor: pointer; min-height: 48px; padding: 14px 4px 6px; border-radius: 7px; position: relative;
+.keys { flex: 0 1 auto; min-width: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(96px, 136px); gap: 6px; padding: 5px; border-radius: 10px; background: #0000001c; box-shadow: inset 0 1px 3px #0003 }
+.keys button { appearance: none; border: 0; cursor: pointer; min-height: 54px; padding: 18px 8px 8px; border-radius: 7px; position: relative;
   background: linear-gradient(#fbf7ec, #e6dcc6); color: var(--ink); box-shadow: inset 0 1px 0 #fff, 0 3px 0 #b9ad93, 0 4px 6px #0003;
   font: 700 12px/1.1 var(--body); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
 .keys button::before { content: ""; position: absolute; top: 6px; left: 50%; width: 22px; height: 5px; margin-left: -11px; border-radius: 3px; background: #3b2a1a }
@@ -159,12 +166,13 @@ button, input { font: inherit; color: inherit }
 .voicebox .temp { grid-column: 1 / -1; height: 6px; border-radius: 3px; box-shadow: inset 0 0 0 1px #0000002a; transition: background .3s }
 .voicebox .desc { font-size: 16px; line-height: 1.45 }
 .voicebox .desc b { display: block; font: 700 13px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px }
-.controls.wrap { flex-direction: column } .controls.wrap .playbtn { justify-content: center }
+.controls.wrap { flex-direction: column; align-items: flex-start }
 @media (max-width: 880px) { .voice-sec { grid-template-columns: minmax(0, 1fr); gap: 32px } }
 @media (max-width: 480px) {
   .voicebox .readout { grid-template-columns: minmax(0, 1fr); min-height: 0 }
   .voicebox .k { font-size: 52px }
   .voicebox .keys { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .controls.wrap { align-items: stretch } .controls.wrap .playbtn { justify-content: center }
 }
 details { margin-top: 28px; border: 1px solid var(--line); border-radius: 10px; padding: 0 16px }
 summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim) }
@@ -246,7 +254,7 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
       </ol>
     </div>
     <figure class="shot">
-      <img src="app-panel.png" alt="Kelvin's panel: an ON AIR lamp saying Zoom hears you, a VU meter labelled How you sound, a Noise knob and four Voice keys" width="900" height="641" loading="lazy">
+      <img src="app-panel.png" alt="Kelvin's panel: an ON AIR lamp saying Zoom hears you, a VU meter labelled How you sound, a Noise knob and four Voice keys" width="900" height="780" loading="lazy">
       <figcaption>Two controls. Noise: Off, Soft, Normal, Maximum. Voice: As is, Clearer, Warmer, Broadcast.</figcaption>
     </figure>
   </section>
