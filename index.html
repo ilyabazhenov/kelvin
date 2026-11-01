@@ -86,6 +86,8 @@ button, input { font: inherit; color: inherit }
   font: 700 14px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; border: 0 }
 .btn.primary { background: rgb(255 179 92); color: #1a120a }
 .btn.ghost { color: var(--text); box-shadow: inset 0 0 0 1px var(--line) }
+.dlnote { margin: -10px 0 0; font: 500 12px/1.4 var(--mono); color: var(--text-dim) }
+.dlnote a { color: inherit }
 .apps { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0 }
 .apps li { font: 500 12px/1 var(--mono); padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--text-dim) }
 @media (max-width: 880px) {
@@ -180,14 +182,9 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
 /* Finale */
 .finale { padding-block: var(--section) calc(var(--section) + 40px); border-top: 1px solid var(--line); display: grid; gap: 22px; max-width: 760px }
 .finale h2 { font-size: clamp(54px, 9vw, 112px); color: rgb(var(--light)) }
-.wait { display: flex; gap: 10px; flex-wrap: wrap; max-width: 520px }
-.wait label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%) }
-.wait input { flex: 1 1 220px; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line); background: #1d1a17; color: var(--text); font-size: 17px }
-.wait input::placeholder { color: #7d7465 }
-.wait .btn { flex: none; background: rgb(var(--light)); color: #1a120a }
-.wait-msg { font-size: 15px; color: var(--text-dim); min-height: 1.4em }
+.finale .btn { justify-self: start; background: rgb(var(--light)); color: #1a120a }
 .footnote { font-size: 14px; color: var(--text-dim); max-width: 46em }
-@media (max-width: 480px) { .wait .btn { flex: 1 1 100% } }
+@media (max-width: 480px) { .finale .btn { justify-self: stretch } }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } .bulb, .wrow, .lampfloat, .voicebox .temp { transition: none } }
 </style>
@@ -224,7 +221,8 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
     </div>
 
     <div class="more">
-      <div class="ctas"><a class="btn primary" href="#waitlist">Join the waitlist</a><a class="btn ghost" href="#how">How it works</a></div>
+      <div class="ctas"><a class="btn primary" href="https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg">Download for Mac</a><a class="btn ghost" href="#how">How it works</a></div>
+      <p class="dlnote">Version 1.0 · macOS 14+ · Apple Silicon · <a href="https://github.com/ilyabazhenov/kelvin/releases">Release notes</a></p>
       <ul class="apps" aria-label="Works in"><li>Zoom</li><li>Google Meet</li><li>Microsoft Teams</li><li>FaceTime</li><li>Slack</li><li>Discord</li><li>macOS 14+</li></ul>
     </div>
   </header>
@@ -310,17 +308,12 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
     </div>
   </section>
 
-  <footer class="finale" id="waitlist">
+  <footer class="finale" id="download">
     <h2>Sound 2700K.</h2>
-    <p class="lede">Kelvin is coming to the Mac. Leave your email and we'll write once, when it's ready.</p>
-    <form class="wait" id="wait-form" novalidate>
-      <label for="wait-email">Email</label>
-      <input id="wait-email" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
-      <button class="btn" type="submit">Notify me</button>
-    </form>
-    <p class="wait-msg" id="wait-msg" role="status"></p>
-    <p class="dim">macOS 14 Sonoma or later · runs on your Mac, no cloud</p>
-    <p class="footnote">Prototype. The samples are a synthetic voice (macOS “Samantha”) mixed with synthetic office noise at 5 dB SNR, run offline through Kelvin's actual processing (MicBench, DPDFNet-8, Noise: Normal). The laptop-mic sample is raised 9.5 dB so both play at the same loudness. A real recording will replace them.</p>
+    <p class="lede">Kelvin 1.0 is out for the Mac. Open the download, drag Kelvin to Applications and pick “Kelvin Mic” in your call app.</p>
+    <a class="btn" href="https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg">Download for Mac</a>
+    <p class="dim">macOS 14 Sonoma or later · Apple Silicon · runs on your Mac, no cloud</p>
+    <p class="footnote">The samples are a synthetic voice (macOS “Samantha”) mixed with synthetic office noise at 5 dB SNR, run offline through Kelvin's actual processing (MicBench, DPDFNet-8, Noise: Normal). The laptop-mic sample is raised 9.5 dB so both play at the same loudness. A real recording will replace them.</p>
   </footer>
 </main>
 
@@ -461,15 +454,6 @@ summary { cursor: pointer; padding-block: 14px; font: 700 14px/1.2 var(--body); 
   voiceKeys.forEach((b, i) => b.addEventListener('click', () => setVoice(i)));
   voicePlayer.button.addEventListener('click', () => play(voicePlayer));
   setVoice(0);
-
-  // Waitlist: a prototype, so it says plainly that nothing is sent.
-  const form = document.getElementById('wait-form'), email = document.getElementById('wait-email'), msg = document.getElementById('wait-msg');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    msg.textContent = /^\S+@\S+\.\S+$/.test(email.value.trim())
-      ? 'Thanks. This is a prototype, so nothing was sent yet.'
-      : 'Enter an email like name@example.com.';
-  });
 
   addEventListener('scroll', () => requestAnimationFrame(light), { passive: true });
   addEventListener('resize', () => { light(); drawAll(); });

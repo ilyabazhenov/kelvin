@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://kelvinmic.app"><b>Website</b></a> ·
-  <a href="https://kelvinmic.app/#waitlist"><b>Join the waitlist</b></a> ·
+  <a href="https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg"><b>Download for Mac</b></a> ·
   <a href="https://github.com/ilyabazhenov/kelvin/releases"><b>Releases</b></a>
 </p>
 
@@ -12,8 +12,8 @@
 gives your voice a warm, close tone. Pick “Kelvin Mic” once in your call app, and it works in Zoom,
 Google Meet, Microsoft Teams and anything else that lets you choose a microphone.
 
-> Kelvin is in development. The first release will appear on the [Releases](https://github.com/ilyabazhenov/kelvin/releases) page;
-> [leave your email](https://kelvinmic.app/#waitlist) to hear when it's out.
+> **[Download Kelvin 1.0](https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg)** for macOS 14 or later on Apple Silicon.
+> Open the download, drag Kelvin to Applications and pick “Kelvin Mic” in your call app.
 
 ## What it does
 
