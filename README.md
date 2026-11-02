@@ -12,7 +12,7 @@
 gives your voice a warm, close tone. Pick “Kelvin Mic” once in your call app, and it works in Zoom,
 Google Meet, Microsoft Teams and anything else that lets you choose a microphone.
 
-> **[Download Kelvin 1.0](https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg)** for macOS 14 or later on Apple Silicon.
+> **[Download Kelvin 1.4](https://github.com/ilyabazhenov/kelvin/releases/latest/download/Kelvin.dmg)** for macOS 14 or later on Apple Silicon.
 > Open the download, drag Kelvin to Applications and pick “Kelvin Mic” in your call app.
 
 ## What it does
